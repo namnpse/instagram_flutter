@@ -77,7 +77,6 @@ class _SignupScreenState extends State<SignupScreen> {
 
   selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
-    print('res: ${im} ${im.length}');
     setState(() {
       _image = im;
     });
@@ -85,41 +84,42 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
-        child: SingleChildScrollView(
+        // child: SingleChildScrollView(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 24,),
-                  SvgPicture.asset(
-                    'assets/ic_instagram.svg',
-                    color: primaryColor,
-                    height: 64,
+                  const Spacer(),
+                  SizedBox(
+                    width: size.height * 0.25,
+                    child: SvgPicture.asset(
+                      'assets/ic_instagram.svg',
+                    ),
                   ),
-                  const SizedBox(
-                    height: 32,
-                  ),
+                  const Spacer(),
                   Stack(
                     children: [
                       _image != null
                           ? CircleAvatar(
-                        radius: 64,
+                        radius: 48,
                         backgroundImage: MemoryImage(_image!),
-                        backgroundColor: Colors.red,
+                        // backgroundColor: Colors.red,
                       )
                           : const CircleAvatar(
-                        radius: 64,
+                        radius: 48,
                         backgroundImage: NetworkImage(
                             'https://i.stack.imgur.com/l60Hf.png'),
-                        backgroundColor: Colors.red,
+                        // backgroundColor: Colors.red,
                       ),
                       Positioned(
                         bottom: -10,
-                        left: 80,
+                        left: 60,
                         child: IconButton(
                           onPressed: selectImage,
                           icon: const Icon(Icons.add_a_photo),
@@ -136,7 +136,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     textEditingController: _usernameController,
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   TextFieldInput(
                     hintText: 'Enter your email',
@@ -144,7 +144,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     textEditingController: _emailController,
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   TextFieldInput(
                     hintText: 'Enter your password',
@@ -153,16 +153,17 @@ class _SignupScreenState extends State<SignupScreen> {
                     isPass: true,
                   ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   TextFieldInput(
                     hintText: 'Enter your bio',
                     textInputType: TextInputType.text,
                     textEditingController: _bioController,
                   ),
-                  const SizedBox(
-                    height: 24,
-                  ),
+                  // const SizedBox(
+                  //   height: 16,
+                  // ),
+                  Spacer(),
                   InkWell(
                     onTap: signUpUser,
                     child: Container(
@@ -219,7 +220,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ],
               ),
-            ),
+            // ),
         ),
       ),
     );
