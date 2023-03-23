@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_flutter/screens/web_screen_layout.dart';
+import 'package:instagram_flutter/utils/utils.dart';
 
 import '../resource/auth_methods.dart';
 import '../responsive/responsive_layout.dart';
@@ -44,11 +45,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(res),
-        ),
-      );
+      showSnackBar(context, res);
     }
   }
 
@@ -142,5 +139,4 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.dispose();
     _passwordController.dispose();
   }
-
 }

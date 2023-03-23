@@ -6,8 +6,8 @@ import 'package:image_picker/image_picker.dart';
 import '../resource/auth_methods.dart';
 import '../responsive/responsive_layout.dart';
 import '../utils/colors.dart';
-import '../utils/dimens.dart';
-import '../utils/image_picking_helper.dart';
+import '../utils/common.dart';
+import '../utils/utils.dart';
 import '../widgets/text_field_input.dart';
 import 'login_screen.dart';
 import 'mobile_screen_layout.dart';
@@ -68,11 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _isLoading = false;
       });
       // show the error
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(res),
-        ),
-      );
+      showSnackBar(context, res);
     }
   }
 
