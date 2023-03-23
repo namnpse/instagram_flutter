@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import '../resource/auth_methods.dart';
 import '../responsive/responsive_layout.dart';
 import '../utils/colors.dart';
+import '../utils/dimens.dart';
 import '../utils/image_picking_helper.dart';
 import '../widgets/text_field_input.dart';
 import 'login_screen.dart';
@@ -88,9 +89,12 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
-        // child: SingleChildScrollView(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: MediaQuery.of(context).size.width > webScreenSize
+                  ? EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width / 3,
+              )
+                  : const EdgeInsets.symmetric(horizontal: 32),
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -220,7 +224,6 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                 ],
               ),
-            // ),
         ),
       ),
     );
