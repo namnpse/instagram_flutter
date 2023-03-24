@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../screens/add_post_screen.dart';
+import '../screens/feed_screen.dart';
 
 const webScreenSize = 600;
 
@@ -15,7 +16,7 @@ const webScreenSize = 600;
 // ];
 
 List<Widget> homeScreenItems = [
-  const Text('FeedScreen'),
+  const FeedScreen(),
   const Text('SearchScreen'),
   const AddPostScreen(),
   const Text('Notifications'),
