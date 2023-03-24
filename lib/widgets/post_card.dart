@@ -23,39 +23,14 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
-  int commentLen = 0;
   bool isLikeAnimating = false;
 
-  @override
-  void initState() {
-    super.initState();
-    print(widget.snap.toString());
-    fetchComments();
-  }
-
-  fetchComments() async {
-    try {
-      QuerySnapshot snap = await FirebaseFirestore.instance
-          .collection('posts')
-          .doc(widget.snap['postId'])
-          .collection('comments')
-          .get();
-      commentLen = snap.docs.length;
-    } catch (err) {
-      showSnackBar(
-        context,
-        err.toString(),
-      );
-    }
-    setState(() {});
-  }
-
   commentsStream() {
-      return FirebaseFirestore.instance
-          .collection('posts')
-          .doc(widget.snap['postId'])
-          .collection('comments')
-          .snapshots();
+    return FirebaseFirestore.instance
+        .collection('posts')
+        .doc(widget.snap['postId'])
+        .collection('comments')
+        .snapshots();
   }
 
   @override
@@ -96,36 +71,20 @@ class _PostCardState extends State<PostCard> {
                   ),
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                    useRootNavigator: false,
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                        child: ListView(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            shrinkWrap: true,
-                            children: [
-                              'Delete',
-                            ].map(
-                                  (e) => InkWell(
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                                      child: Text(e),
-                                    ),
-                                    onTap: () {
-                                      // delete the post
-                                    },
-                                  ),
-                                )
-                                .toList()),
-                      );
-                    },
-                  );
-                },
-                icon: const Icon(Icons.more_vert),
-              )
+              _hasDeletePostPermission(user)
+                  ? IconButton(
+                      onPressed: () {
+                        showDialog(
+                          useRootNavigator: false,
+                          context: context,
+                          builder: (context) {
+                            return _buildMenuOptionDialog(context);
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.more_vert),
+                    )
+                  : const SizedBox.shrink(),
             ],
           ),
         ),
@@ -259,8 +218,7 @@ class _PostCardState extends State<PostCard> {
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: StreamBuilder(
                     stream: commentsStream(),
-                    builder: (context,
-                        AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                    builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                       // if (snapshot.connectionState == ConnectionState.waiting) {
                       //   return const Center(
                       //     child: CircularProgressIndicator(),
@@ -291,6 +249,42 @@ class _PostCardState extends State<PostCard> {
           ),
         )
       ],
+    );
+  }
+
+  _deletePost(String postId) async {
+    try {
+      await FireStoreMethods().deletePost(postId);
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
+  }
+
+  bool _hasDeletePostPermission(User user) => widget.snap['uid'].toString() == user.uid;
+
+  Widget _buildMenuOptionDialog(BuildContext context) {
+    return Dialog(
+      child: ListView(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shrinkWrap: true,
+          children: [
+            'Delete',
+          ].map((e) =>
+              InkWell(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                  child: Text(e),
+                ),
+                onTap: () {
+                  _deletePost(widget.snap['postId'].toString());
+                  Navigator.of(context).pop(); // close dialog
+                },
+              ),
+          )
+              .toList()),
     );
   }
 }
