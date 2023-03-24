@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
+import '../resource/firestore_methods.dart';
 import '../utils/colors.dart';
+import '../utils/utils.dart';
 import '../widgets/comment_card.dart';
 
 class CommentsScreen extends StatefulWidget {
@@ -19,7 +21,27 @@ class _CommentsScreenState extends State<CommentsScreen> {
   TextEditingController();
 
   void postComment(String uid, String name, String profilePic) async {
+    try {
+      String res = await FireStoreMethods().postComment(
+        widget.postId,
+        commentEditingController.text,
+        uid,
+        name,
+        profilePic,
+      );
 
+      if (res != 'success') {
+        showSnackBar(context, res);
+      }
+      setState(() {
+        commentEditingController.text = "";
+      });
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
   }
 
   @override
@@ -39,9 +61,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
             .collection('posts')
             .doc(widget.postId)
             .collection('comments')
+            .orderBy('datePublished')
             .snapshots(),
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+        builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),

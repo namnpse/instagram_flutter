@@ -7,6 +7,7 @@ import '../providers/user_provider.dart';
 import '../resource/firestore_methods.dart';
 import '../screens/comments_screen.dart';
 import '../utils/colors.dart';
+import '../utils/utils.dart';
 import 'like_animation.dart';
 
 class PostCard extends StatefulWidget {
@@ -33,13 +34,19 @@ class _PostCardState extends State<PostCard> {
   }
 
   fetchComments() async {
-    commentLen = await FirebaseFirestore.instance
-        .collection('posts')
-        .doc(widget.snap['postId'])
-        .collection('comments')
-        .snapshots()
-        .length;
-
+    try {
+      QuerySnapshot snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .get();
+      commentLen = snap.docs.length;
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
     setState(() {});
   }
 
@@ -93,8 +100,7 @@ class _PostCardState extends State<PostCard> {
                             shrinkWrap: true,
                             children: [
                               'Delete',
-                            ]
-                                .map(
+                            ].map(
                                   (e) => InkWell(
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
