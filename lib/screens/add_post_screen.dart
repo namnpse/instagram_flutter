@@ -97,6 +97,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   void clearImage() {
     setState(() {
       _file = null;
+      _descriptionController.clear();
     });
   }
 
