@@ -61,7 +61,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
-  void postImage(String uid, String username) async {
+  void postImage(String uid, String username, String userAvatarUrl) async {
     setState(() {
       isLoading = true;
     });
@@ -71,6 +71,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         _file!,
         uid,
         username,
+          userAvatarUrl
       );
       if (res == "success") {
         setState(() {
@@ -132,7 +133,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
         actions: <Widget>[
           TextButton(
             onPressed: () => postImage(
-                userProvider.getUser.uid, userProvider.getUser.username),
+                userProvider.getUser.uid, userProvider.getUser.username, userProvider.getUser.photoUrl),
             child: const Text(
               "Post",
               style: TextStyle(
