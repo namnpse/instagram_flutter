@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../providers/user_provider.dart';
 import '../resource/firestore_methods.dart';
+import '../screens/comments_screen.dart';
 import '../utils/colors.dart';
 import 'like_animation.dart';
 
@@ -182,10 +183,17 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
             IconButton(
-                icon: const Icon(
-                  Icons.comment_outlined,
+              icon: const Icon(
+                Icons.comment_outlined,
+              ),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => CommentsScreen(
+                    postId: widget.snap['postId'].toString(),
+                  ),
                 ),
-                onPressed: () {}),
+              ),
+            ),
             IconButton(
                 icon: const Icon(
                   Icons.send,
