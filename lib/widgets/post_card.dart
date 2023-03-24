@@ -50,6 +50,14 @@ class _PostCardState extends State<PostCard> {
     setState(() {});
   }
 
+  commentsStream() {
+      return FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
@@ -249,12 +257,23 @@ class _PostCardState extends State<PostCard> {
               InkWell(
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Text(
-                    'View all $commentLen comments',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: secondaryColor,
-                    ),
+                  child: StreamBuilder(
+                    stream: commentsStream(),
+                    builder: (context,
+                        AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                      // if (snapshot.connectionState == ConnectionState.waiting) {
+                      //   return const Center(
+                      //     child: CircularProgressIndicator(),
+                      //   );
+                      // }
+                      return Text(
+                        'View all ${snapshot.data?.docs.length ?? 0} comments',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: secondaryColor,
+                        ),
+                      );
+                    },
                   ),
                 ),
                 onTap: () {},
