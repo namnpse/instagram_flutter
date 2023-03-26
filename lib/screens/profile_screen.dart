@@ -165,42 +165,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           const Divider(),
           // displaying user posts
-          // FutureBuilder(
-          //   future: FirebaseFirestore.instance
-          //       .collection('posts')
-          //       .where('uid', isEqualTo: user.uid)
-          //       .get(),
-          //   builder: (BuildContext coontext, snapshot) {
-          //     if (!snapshot.hasData) {
-          //       return const Center(
-          //         child: CircularProgressIndicator(),
-          //       );
-          //     }
-          //     return GridView.builder(
-          //       physics: const NeverScrollableScrollPhysics(),
-          //       shrinkWrap: true,
-          //       itemCount: (snapshot.data! as dynamic).docs.length,
-          //       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          //         crossAxisCount: 3,
-          //         crossAxisSpacing: 5,
-          //         mainAxisSpacing: 1.5,
-          //         childAspectRatio: 1.0,
-          //       ),
-          //       itemBuilder: (BuildContext context, int index) {
-          //         DocumentSnapshot video =
-          //         (snapshot.data! as dynamic).docs[index];
-          //         return Container(
-          //           child: Image(
-          //             image: NetworkImage(
-          //               (video.data()! as dynamic)["postUrl"],
-          //             ),
-          //             fit: BoxFit.cover,
-          //           ),
-          //         );
-          //       },
-          //     );
-          //   },
-          // ),
+          FutureBuilder(
+            future: FirebaseFirestore.instance
+                .collection('posts')
+                .where('uid', isEqualTo: user.uid)
+                .get(),
+            builder: (BuildContext coontext, snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              return GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: (snapshot.data! as dynamic).docs.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 4,
+                  mainAxisSpacing: 4,
+                  childAspectRatio: 1.0,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  DocumentSnapshot video =
+                  (snapshot.data! as dynamic).docs[index];
+                  return ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Image.network(
+                      (video.data()! as dynamic)["postUrl"],
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 200,
+                      errorBuilder: (context, exception, stackTrace) {
+                        return const SizedBox(
+                          height: 200,
+                        );
+                      },
+                    ),
+                  );
+                },
+              );
+            },
+          ),
         ],
       ),
     );
