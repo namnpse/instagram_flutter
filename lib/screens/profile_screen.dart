@@ -5,9 +5,11 @@ import '../models/user.dart' as app;
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+import '../resource/auth_methods.dart';
 import '../resource/firestore_methods.dart';
 import '../utils/colors.dart';
 import '../widgets/follow_button.dart';
+import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   String? uid;
@@ -142,6 +144,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   },
                                 ),
                               ]),
+                          FollowButton(
+                            text: "Sign Out",
+                            backgroundColor: mobileBackgroundColor,
+                            textColor: primaryColor,
+                            borderColor: Colors.grey,
+                            function: () {
+                              AuthMethods().signOut().then((value) {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginScreen(),
+                                  ),
+                                );
+                              });
+                            },
+                          )
                         ],
                       ),
                     )
