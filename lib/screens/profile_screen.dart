@@ -25,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   var userData = {};
   bool isLoading = false;
   int followers = 0;
+  int followings = 0;
   String? userId;
 
   @override
@@ -54,7 +55,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
         .get();
     userData = userSnap.data()!;
     isFollowing = userSnap['followers']?.contains(FirebaseAuth.instance.currentUser!.uid) ?? false;
-    followers = userSnap['followers']?.length ?? 0;
+    followers = userData['followers']?.length ?? 0;
+    followings = userData['following']?.length ?? 0;
     setState(() {
       isLoading = false;
     });
@@ -80,6 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               children: <Widget>[
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     CircleAvatar(
                       radius: 40.0,
@@ -97,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             children: <Widget>[
                               buildStatColumn("posts", postsLen),
                               buildStatColumn("followers", followers),
-                              buildStatColumn("following", userData['following']?.length ?? 0),
+                              buildStatColumn("following", followings),
                             ],
                           ),
                           // buttons -> edit profile, follow, unfollow
