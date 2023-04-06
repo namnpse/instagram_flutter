@@ -111,8 +111,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 height: 12,
               ),
               Flexible(
-                flex: 2,
+                flex: 1,
                 child: Container(),
+              ),
+              Expanded(
+                child: Image.asset(
+                  'assets/logo_instagram.png',
+                  height: 64,
+                  width: 64,
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -120,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 8),
                     child: const Text(
-                      'Dont have an account?',
+                      "Don't have an account?",
                     ),
                   ),
                   GestureDetector(
@@ -130,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                     child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 32),
                       child: const Text(' Signup.', style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

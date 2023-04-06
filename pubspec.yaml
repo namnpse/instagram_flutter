@@ -77,6 +77,7 @@ flutter:
   assets:
     - assets/ic_instagram.svg
     - assets/ic_placeholder.png
+    - assets/logo_instagram.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
