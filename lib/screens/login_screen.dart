@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import '../resource/auth_methods.dart';
 import '../responsive/responsive_layout.dart';
 import '../utils/colors.dart';
 import '../utils/common.dart';
 import '../utils/utils.dart';
 import '../widgets/text_field_input.dart';
+import '../widgets/textfield_widget.dart';
 import 'mobile_screen_layout.dart';
 import 'signup_screen.dart';
 import 'web_screen_layout.dart';
@@ -20,14 +22,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final _email = "".obs;
+  final _password = "".obs;
   bool _isLoading = false;
+  final isVisible = false.obs;
 
   void loginUser() async {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethods().loginUser(
-        email: _emailController.text, password: _passwordController.text);
+    String res = await AuthMethods().loginUser(email: _email.value, password: _password.value);
     setState(() {
       _isLoading = false;
     });
@@ -39,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
               webScreenLayout: WebScreenLayout(),
             ),
           ),
-              (route) => false);
+          (route) => false);
     } else {
       showSnackBar(context, res);
     }
@@ -56,8 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
         body: SafeArea(
           child: Container(
             padding: MediaQuery.of(context).size.width > webScreenSize
-                ? EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 3)
+                ? EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width / 3)
                 : const EdgeInsets.symmetric(horizontal: 32),
             width: double.infinity,
             child: Column(
@@ -75,19 +78,47 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 64,
                 ),
-                TextFieldInput(
-                  hintText: 'Enter your email',
-                  textInputType: TextInputType.emailAddress,
-                  textEditingController: _emailController,
+                // TextFieldInput(
+                //   hintText: 'Enter your email',
+                //   textInputType: TextInputType.emailAddress,
+                //   textEditingController: _emailController,
+                // ),
+                Obx(
+                  () => TextFieldWidget(
+                    hintText: 'Email',
+                    obscureText: false,
+                    prefixIconData: Icons.mail_outline,
+                    suffixIconData: _email.value.validEmail() ? Icons.check : null,
+                    onChanged: (value) {
+                      _email.value = value;
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 24,
                 ),
-                TextFieldInput(
-                  hintText: 'Enter your password',
-                  textInputType: TextInputType.text,
-                  textEditingController: _passwordController,
-                  isPass: true,
+                // TextFieldInput(
+                //   hintText: 'Enter your password',
+                //   textInputType: TextInputType.text,
+                //   textEditingController: _passwordController,
+                //   isPass: true,
+                // ),
+                Obx(
+                  () => TextFieldWidget(
+                    hintText: 'Password',
+                    obscureText: !isVisible.isFalse,
+                    prefixIconData: Icons.lock_outline,
+                    suffixIconData: isVisible.isTrue
+                        ? Icons.visibility
+                        : Icons.visibility_off,
+                    onChanged: (value) {
+                      // model.isValidEmail(value);
+                      _password.value = value;
+                    },
+                    onTapPostfixIcon: () {
+                      isVisible.value = !isVisible.value;
+                    },
+                  ),
                 ),
                 const SizedBox(
                   height: 24,
@@ -95,9 +126,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 InkWell(
                   onTap: loginUser,
                   child: Container(
+                    height: 48,
                     width: double.infinity,
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    // margin: const EdgeInsets.symmetric(vertical: 12),
                     decoration: const ShapeDecoration(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -105,10 +137,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: blueColor,
                     ),
                     child: !_isLoading
-                        ? const Text('Log in',)
-                        : const CircularProgressIndicator(
-                      color: primaryColor,
-                    ),
+                        ? const Text('Log in', style: TextStyle(fontWeight: FontWeight.bold))
+                        : const SizedBox(
+                            height: 28,
+                            width: 28,
+                            child: CircularProgressIndicator(color: primaryColor, strokeWidth: 3.0),
+                          ),
                   ),
                 ),
                 const SizedBox(
@@ -142,9 +176,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 32),
-                        child: const Text(' Signup.', style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+                        child: const Text(
+                          ' Sign Up.',
+                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
                         ),
                       ),
                     ),

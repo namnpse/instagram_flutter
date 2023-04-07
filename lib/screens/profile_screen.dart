@@ -67,16 +67,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final app.User user = Provider.of<UserProvider>(context).getUser;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: mobileBackgroundColor,
-        title: Text(
-          user.username,
-        ),
-        centerTitle: false,
-      ),
       body: ListView(
         children: <Widget>[
           // Profile Picture, Stats column, Follow, Unfollow Button, username and bio
+          Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(top: 8, left: 16),
+              child: Text(
+                user.username,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+              )),
+          Container(
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(top: 4, left: 16),
+            child: Text(user.bio),
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -168,18 +173,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
                 // usernmae and description
-                Container(
-                    alignment: Alignment.centerLeft,
-                    padding: const EdgeInsets.only(top: 15.0),
-                    child: Text(
-                      user.username,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    )),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.only(top: 1.0),
-                  child: Text(user.bio),
-                ),
+                // Container(
+                //     alignment: Alignment.centerLeft,
+                //     padding: const EdgeInsets.only(top: 15.0),
+                //     child: Text(
+                //       user.username,
+                //       style: const TextStyle(fontWeight: FontWeight.bold),
+                //     )),
+                // Container(
+                //   alignment: Alignment.centerLeft,
+                //   padding: const EdgeInsets.only(top: 1.0),
+                //   child: Text(user.bio),
+                // ),
               ],
             ),
           ),
