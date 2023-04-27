@@ -259,18 +259,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ],
     );
   }
-
-  int _countFollowings(Map followings) {
-    int count = 0;
-
-    void countValues(key, value) {
-      if (value) {
-        count += 1;
-      }
-    }
-
-    followings.forEach(countValues);
-
-    return count;
-  }
 }

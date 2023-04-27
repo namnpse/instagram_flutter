@@ -28,14 +28,6 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isLoading = false;
   Uint8List? _image;
 
-  @override
-  void dispose() {
-    super.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _usernameController.dispose();
-  }
-
   void signUpUser() async {
     // set loading to true
     setState(() {
@@ -223,5 +215,14 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _usernameController.dispose();
+    _bioController.dispose();
   }
 }

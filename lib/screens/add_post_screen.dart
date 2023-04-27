@@ -102,14 +102,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    _descriptionController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final UserProvider userProvider = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
         ? Center(
@@ -187,9 +181,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ),
             ],
           ),
-          Divider(),
+          const Divider(),
         ],
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
   }
 }
