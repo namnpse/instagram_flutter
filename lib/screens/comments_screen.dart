@@ -17,8 +17,7 @@ class CommentsScreen extends StatefulWidget {
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
-  final TextEditingController commentEditingController =
-  TextEditingController();
+  final TextEditingController commentEditingController = TextEditingController();
 
   void postComment(String uid, String name, String profilePic) async {
     try {
